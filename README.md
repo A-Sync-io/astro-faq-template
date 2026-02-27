@@ -1,6 +1,6 @@
 # Astro FAQ Template
 
-A modern, fast, and SEO-optimized Astro starter template for FAQ and content websites. Built with Astro 5, Tailwind CSS v4, and TypeScript.
+A modern, editorial-style FAQ and content website template built with Astro 5, Tailwind CSS v4, and TypeScript. Inspired by premium news and content sites.
 
 [![Astro](https://img.shields.io/badge/Astro-5.x-BC52EE?logo=astro)](https://astro.build)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38B2AC?logo=tailwind-css)](https://tailwindcss.com)
@@ -9,11 +9,23 @@ A modern, fast, and SEO-optimized Astro starter template for FAQ and content web
 
 ---
 
+## 🎨 Design System
+
+This template features a **premium editorial design** with:
+
+- **Clean typography** with large, bold headlines
+- **Card-based layouts** for easy scanning
+- **CSS Custom Properties** for effortless theming
+- **Dark mode support** (auto + manual toggle ready)
+- **Responsive design** that works beautifully on all devices
+
+---
+
 ## 🚀 Quick Start
 
 ### Use this template
 
-Click the "Use this template" button above to create a new repository from this template.
+Click the "**Use this template**" button above to create a new repository.
 
 ### Or clone directly
 
@@ -28,67 +40,46 @@ Your site will be running at `http://localhost:4321`
 
 ---
 
-## ✨ Features
+## 🎨 Customization
 
-| Feature | Description |
-|---------|-------------|
-| ⚡ **Astro 5** | Latest Astro with Content Collections |
-| 🎨 **Tailwind CSS v4** | Utility-first styling with dark mode support |
-| 📝 **Content Collections** | Type-safe markdown content with Zod schemas |
-| 🔍 **Client-side Search** | Fast fuzzy search without external services |
-| 📱 **Fully Responsive** | Mobile-first design |
-| 🔍 **SEO Optimized** | Meta tags, OpenGraph, sitemap, structured data |
-| 🏷️ **Schema.org** | FAQPage structured data for rich snippets |
-| ♿ **Accessible** | WCAG compliant, keyboard navigation |
-| 🌙 **Dark Mode** | Automatic dark mode support |
-| 📊 **Analytics Ready** | GA4 placeholder included |
-| ⚡ **100/100 Lighthouse** | Optimized for Core Web Vitals |
+### 1. Change Your Brand Color (Super Easy!)
 
----
+**Option A: Quick CSS Change (Recommended)**
 
-## 📁 Project Structure
+Edit `src/styles/global.css` and change the `--color-primary` value:
 
-```
-├── public/              # Static assets
-│   └── favicon.svg
-├── src/
-│   ├── components/      # Reusable UI components
-│   │   ├── FAQAccordion.astro
-│   │   ├── FAQCard.astro
-│   │   ├── Footer.astro
-│   │   ├── Header.astro
-│   │   ├── Search.astro
-│   │   └── SEO.astro
-│   ├── content/         # Content collections
-│   │   ├── config.ts    # Content schemas
-│   │   └── faq/         # FAQ markdown files
-│   ├── layouts/         # Page layouts
-│   │   └── Layout.astro
-│   ├── pages/           # Routes
-│   │   ├── index.astro
-│   │   ├── search.astro
-│   │   └── faq/
-│   │       ├── index.astro
-│   │       └── [slug].astro
-│   ├── styles/
-│   │   └── global.css
-│   ├── types/
-│   │   └── index.ts
-│   └── config.ts        # Site configuration
-├── .vscode/             # VS Code settings
-├── astro.config.mjs
-├── package.json
-├── tsconfig.json
-└── README.md
+```css
+:root {
+  /* CHANGE THIS to your brand color */
+  --color-primary: #E30613;  /* Default: DI Digital red */
+  
+  /* Or use any color format: */
+  --color-primary: #2563eb;     /* Hex blue */
+  --color-primary: rgb(37, 99, 235);  /* RGB */
+  --color-primary: hsl(221, 83%, 53%);  /* HSL */
+  --color-primary: oklch(0.546 0.245 262.881);  /* OKLCH */
+}
 ```
 
----
+**Option B: Full Theme Configuration**
 
-## 🛠️ Customization
+For more control, edit `src/config.ts`:
 
-### 1. Site Configuration
+```typescript
+export const THEME = {
+  primary: {
+    DEFAULT: '#2563eb',  // Your brand color
+    50: '#EFF6FF',       // Lightest shade
+    100: '#DBEAFE',
+    // ... all the way to 950
+  },
+  // ... other colors
+};
+```
 
-Edit `src/config.ts` to customize your site:
+### 2. Site Configuration
+
+Edit `src/config.ts`:
 
 ```typescript
 export const SITE = {
@@ -103,12 +94,13 @@ export const SITE = {
 export const NAV = {
   main: [
     { label: 'Home', href: '/' },
-    { label: 'FAQ', href: '/faq' }
+    { label: 'FAQ', href: '/faq' },
+    { label: 'Categories', href: '/categories' }
   ]
 };
 ```
 
-### 2. Adding FAQ Content
+### 3. Adding FAQ Content
 
 Create markdown files in `src/content/faq/`:
 
@@ -126,18 +118,100 @@ order: 1
 Your answer content in **Markdown** format.
 ```
 
-### 3. Frontmatter Fields
+---
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `title` | string | ✅ | The question (max 100 chars) |
-| `description` | string | ✅ | Short summary (max 200 chars) |
-| `category` | string | ✅ | Category slug |
-| `tags` | array | ❌ | List of tags |
-| `pubDate` | date | ✅ | Publication date |
-| `draft` | boolean | ❌ | Hide from production |
-| `featured` | boolean | ❌ | Pin to top |
-| `order` | number | ❌ | Sort order |
+## 📁 Project Structure
+
+```
+├── public/              # Static assets
+│   └── favavicon.svg
+├── src/
+│   ├── components/      # Reusable UI components
+│   │   ├── FAQAccordion.astro   # Expandable FAQ list
+│   │   ├── FAQCard.astro        # FAQ preview cards
+│   │   ├── Footer.astro
+│   │   ├── Header.astro
+│   │   ├── Search.astro         # Client-side search
+│   │   └── SEO.astro
+│   ├── content/         # Content collections
+│   │   ├── config.ts    # Content schemas
+│   │   ├── faq/         # FAQ markdown files
+│   │   └── categories/  # Category data files
+│   ├── layouts/         # Page layouts
+│   │   └── Layout.astro
+│   ├── pages/           # Routes
+│   │   ├── index.astro          # Homepage
+│   │   ├── search.astro         # Search page
+│   │   ├── categories.astro     # Categories list
+│   │   └── faq/
+│   │       ├── index.astro      # All questions
+│   │       └── [slug].astro     # Individual FAQ
+│   ├── styles/
+│   │   └── global.css   # CSS variables + utilities
+│   ├── types/
+│   │   └── index.ts
+│   └── config.ts        # Site + theme config
+├── .vscode/             # VS Code settings
+├── astro.config.mjs
+├── package.json
+├── README.md
+└── LICENSE
+```
+
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---------|-------------|
+| ⚡ **Astro 5** | Latest Astro with Content Collections |
+| 🎨 **Easy Theming** | Change one CSS variable to rebrand |
+| 📝 **Content Collections** | Type-safe markdown with Zod schemas |
+| 🔍 **Client-side Search** | Fast fuzzy search, no external service |
+| 📱 **Fully Responsive** | Mobile-first, works on all devices |
+| 🔍 **SEO Optimized** | Meta tags, OpenGraph, sitemap, structured data |
+| 🏷️ **Schema.org** | FAQPage structured data for rich snippets |
+| ♿ **Accessible** | WCAG compliant, keyboard navigation |
+| 🌙 **Dark Mode** | Automatic + manual toggle ready |
+| 📊 **Analytics Ready** | GA4 placeholder included |
+| ⚡ **100/100 Lighthouse** | Optimized for Core Web Vitals |
+
+---
+
+## 🎨 Design Tokens
+
+The template uses CSS custom properties for consistent theming:
+
+```css
+/* Colors */
+--color-primary: #E30613;
+--color-secondary: #1A1A1A;
+--color-bg-primary: #FFFFFF;
+--color-bg-secondary: #F5F5F5;
+--color-text-primary: #1A1A1A;
+--color-text-secondary: #4A4A4A;
+--color-text-tertiary: #737373;
+--color-border-light: #E5E5E5;
+
+/* Typography */
+--font-sans: "Inter Variable", system-ui, sans-serif;
+
+/* Spacing */
+--space-xs: 0.25rem;
+--space-sm: 0.5rem;
+--space-md: 1rem;
+--space-lg: 1.5rem;
+--space-xl: 2rem;
+
+/* Border Radius */
+--radius-md: 0.25rem;
+--radius-lg: 0.5rem;
+--radius-xl: 0.75rem;
+
+/* Shadows */
+--shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+--shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+```
 
 ---
 
@@ -164,12 +238,11 @@ Your answer content in **Markdown** format.
 
 ### Manual
 
-Build the site:
 ```bash
 npm run build
 ```
 
-Deploy the `dist/` folder to your hosting provider.
+Deploy the `dist/` folder to any static host.
 
 ---
 
@@ -177,22 +250,23 @@ Deploy the `dist/` folder to your hosting provider.
 
 ### Analytics
 
-Replace `GA_MEASUREMENT_ID` in `src/layouts/Layout.astro` with your Google Analytics 4 ID:
+Replace `GA_MEASUREMENT_ID` in `src/layouts/Layout.astro`:
 
 ```html
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 ```
 
-### SEO
+### Dark Mode Toggle
 
-Each page automatically generates:
-- Meta tags
-- OpenGraph tags
-- Twitter Cards
-- Canonical URLs
-- Structured data (Schema.org)
+To add a manual dark mode toggle, use the `data-theme` attribute:
 
-Override per-page in frontmatter or props.
+```javascript
+// Toggle dark mode
+document.documentElement.setAttribute('data-theme', 'dark');
+
+// Toggle light mode
+document.documentElement.removeAttribute('data-theme');
+```
 
 ---
 
