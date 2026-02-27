@@ -1,167 +1,271 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import TeaserCard from '../components/TeaserCard.astro';
 import { getCollection } from 'astro:content';
-import FAQCard from '../components/FAQCard.astro';
-import Search from '../components/Search.astro';
 import { SITE } from '../config';
 
 const allFAQs = await getCollection('faq', ({ data }) => !data.draft);
-const featuredFAQs = allFAQs
-  .filter((faq) => faq.data.featured)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 6);
 
-const categories = [...new Set(allFAQs.map((faq) => faq.data.category))];
+// Get featured FAQ (first featured one, or first overall)
+const featuredFAQ = allFAQs.find(f => f.data.featured) || allFAQs[0];
 
-const totalFAQs = allFAQs.length;
+// Get remaining FAQs for the grid
+const remainingFAQs = allFAQs.filter(f => f.slug !== featuredFAQ?.slug).slice(0, 6);
+
+// Get categories for sidebar
+const categories = [...new Set(allFAQs.map(faq => faq.data.category))];
+
+// Mock "most read" data (in real app, this would come from analytics)
+const mostRead = remainingFAQs.slice(0, 5).map((faq, i) => ({ ...faq, rank: i + 1 }));
 ---
 
-<Layout>
-  <!-- Hero Section -->
-  <section class="relative bg-[var(--color-secondary)] text-[var(--color-text-inverted)] overflow-hidden">
-    <div class="absolute inset-0 opacity-10">
-      <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 32px 32px;"></div>
-    </div>
+<Layout showSidebar={true}>
+  <!-- Main Content -->
+  <div slot="default">
     
-    <div class="container relative py-20 md:py-28">
-      <div class="max-w-3xl">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] text-sm font-medium mb-6">
-          <span class="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse"></span>
-          {totalFAQs}+ questions answered
-        </div>
-        
-        <h1 class="editorial-title text-[var(--color-text-inverted)] mb-6">
-          {SITE.name}
-        </h1>
-        
-        <p class="editorial-subtitle text-[var(--color-text-tertiary)] mb-8 max-w-2xl">
-          {SITE.description}
-        </p>
-        
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a href="/faq" class="btn btn-primary text-base px-8 py-4">
-            Browse All Questions
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </a>
-          
-          <a href="/search" class="btn btn-secondary text-base px-8 py-4 border-[var(--color-secondary-lighter)] text-[var(--color-text-inverted)] hover:bg-[var(--color-secondary-lighter)]">
-            Search
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Search Section -->
-  <section class="py-16 md:py-20 bg-[var(--color-bg-secondary)]">
-    <div class="container">
-      <div class="max-w-3xl mx-auto text-center mb-10">
-        <h2 class="section-title mb-4">Find Answers Fast</h2>
-        <p class="text-[var(--color-text-secondary)] text-lg">Search our knowledge base for instant answers</p>
+    <!-- Hero Section -->
+    {featuredFAQ && <Hero faq={featuredFAQ} />}
+    
+    <!-- FAQ Grid -->
+    <section class="faq-section">
+      <div class="section-header">
+        <h2 class="section-title">Latest Questions</h2>
+        <a href="/faq" class="section-link">View all →</a>
       </div>
       
-      <Search />
-    </div>
-  </section>
-
-  <!-- Categories Section -->
-  <section class="py-16 md:py-20">
-    <div class="container">
-      <div class="flex items-end justify-between mb-10">
-        <div>
-          <span class="label-text mb-2 block">Browse by Topic</span>
-          <h2 class="section-title">Categories</h2>
-        </div>
-        
-        <a href="/categories" class="hidden sm:flex items-center gap-1 text-[var(--color-primary)] font-semibold hover:gap-2 transition-all">
-          View all
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-        </a>
+      <div class="faq-grid">
+        {remainingFAQs.map((faq) => (
+          <TeaserCard faq={faq} />
+        ))}
       </div>
-      
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {categories.map((category) => {
-          const count = allFAQs.filter(faq => faq.data.category === category).length;
-          return (
-            <a 
-              href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}
-              class="group card p-6 flex flex-col"
-            >
-              <div class="w-12 h-12 rounded-xl bg-[var(--color-primary-50)] text-[var(--color-primary)] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
-                </svg>
-              </div>
-              
-              <h3 class="text-lg font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors mb-1">
-                {category}
-              </h3>
-              
-              <p class="text-sm text-[var(--color-text-tertiary)]">{count} questions</p>
-            </a>
-          );
-        })}
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="categories-section">
+      <h2 class="section-title">Browse by Category</h2>
+      <div class="category-grid">
+        {categories.map((category) => (
+          <a href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`} class="category-card">
+            <span class="category-name">{category}</span>
+            <span class="category-count">{allFAQs.filter(f => f.data.category === category).length} questions</span>
+          </a>
+        ))}
       </div>
-    </div>
-  </section>
-
-  <!-- Featured FAQs -->
-  {featuredFAQs.length > 0 && (
-    <section class="py-16 md:py-20 bg-[var(--color-bg-secondary)]">
-      <div class="container">
-        <div class="flex items-end justify-between mb-10">
-          <div>
-            <span class="label-text mb-2 block">Most Popular</span>
-            <h2 class="section-title">Featured Questions</h2>
-          </div>
-          
-          <a href="/faq" class="hidden sm:flex items-center gap-1 text-[var(--color-primary)] font-semibold hover:gap-2 transition-all">
-            View all
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {featuredFAQs.map((faq) => (
-            <FAQCard item={faq} />
-          ))}
-        </div>
-        
-        <div class="mt-10 text-center sm:hidden">
-          <a href="/faq" class="btn btn-secondary">
-            View all questions
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </a>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="cta-box">
+        <h2>Can't find what you're looking for?</h2>
+        <p>Our team is here to help. Browse all questions or get in touch.</p>
+        <div class="cta-buttons">
+          <a href="/faq" class="btn btn-primary">Browse All Questions</a>
+          <a href="/search" class="btn btn-secondary">Search</a>
         </div>
       </div>
     </section>
-  )}
-
-  <!-- CTA Section -->
-  <section class="py-16 md:py-20">
-    <div class="container">
-      <div class="card p-8 md:p-12 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-700)] text-white text-center">
-        <h2 class="text-3xl md:text-4xl font-bold mb-4">Can't find what you're looking for?</h2>
-        
-        <p class="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
-          Our team is here to help. Reach out and we'll get back to you as soon as possible.
-        </p>
-        
-        <a href="#" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-[var(--color-primary)] font-semibold rounded-lg hover:bg-[var(--color-bg-secondary)] transition-colors">
-          Contact Support
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-          </svg>
-        </a>
-      </div>
+    
+  </div>
+  
+  <!-- Sidebar -->
+  <div slot="sidebar">
+    
+    <!-- Most Read Box -->
+    <div class="sidebar-box">
+      <h3 class="sidebar-box-title">Most Popular</h3>
+      <ol class="most-read-list">
+        {mostRead.map((faq) => (
+          <li class="most-read-item">
+            <span class="most-read-number">{faq.rank}</span>
+            <a href={`/faq/${faq.slug}`} class="most-read-title">{faq.data.title}</a>
+          </li>
+        ))}
+      </ol>
     </div>
-  </section>
+    
+    <!-- Contact Box -->
+    <div class="sidebar-box contact-box">
+      <h3 class="sidebar-box-title">Need Help?</h3>
+      <p>{SITE.description}</p>
+      <a href="/faq" class="btn btn-primary">Browse FAQ</a>
+    </div>
+    
+    <!-- Newsletter Box -->
+    <div class="sidebar-box newsletter-box">
+      <h3 class="sidebar-box-title">Stay Updated</h3>
+      <p>Get the latest answers delivered to your inbox.</p>
+      <button class="btn btn-white">Subscribe</button>
+    </div>
+    
+    <!-- Categories Box -->
+    <div class="sidebar-box">
+      <h3 class="sidebar-box-title">Categories</h3>
+      <ul class="sidebar-list">
+        {categories.slice(0, 5).map((category) => (
+          <li>
+            <a href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}>
+              {category}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+    
+  </div>
 </Layout>
+
+<style>
+  /* Section Styling */
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .section-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
+  .section-link:hover {
+    text-decoration: underline;
+  }
+
+  /* FAQ Grid */
+  .faq-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+  }
+
+  @media (min-width: 768px) {
+    .faq-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Categories Section */
+  .categories-section {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .categories-section .section-title {
+    margin-bottom: var(--space-lg);
+  }
+
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-lg);
+    background: var(--color-bg-secondary);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .category-card:hover {
+    background: var(--color-bg-tertiary);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  .category-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-xs);
+  }
+
+  .category-count {
+    font-size: 0.875rem;
+    color: var(--color-text-tertiary);
+  }
+
+  /* CTA Section */
+  .cta-section {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .cta-box {
+    background: var(--color-primary);
+    color: white;
+    padding: var(--space-2xl);
+    border-radius: var(--radius-lg);
+    text-align: center;
+  }
+
+  .cta-box h2 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .cta-box p {
+    opacity: 0.9;
+    margin-bottom: var(--space-lg);
+  }
+
+  .cta-buttons {
+    display: flex;
+    gap: var(--space-md);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cta-buttons .btn-primary {
+    background: white;
+    color: var(--color-primary);
+  }
+
+  .cta-buttons .btn-primary:hover {
+    background: var(--color-bg-secondary);
+  }
+
+  .cta-buttons .btn-secondary {
+    background: transparent;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.5);
+  }
+
+  .cta-buttons .btn-secondary:hover {
+    background: rgba(255,255,255,0.1);
+  }
+
+  /* Sidebar List */
+  .sidebar-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar-list li {
+    margin-bottom: var(--space-sm);
+  }
+
+  .sidebar-list a {
+    color: var(--color-text-secondary);
+    font-size: 0.9375rem;
+  }
+
+  .sidebar-list a:hover {
+    color: var(--color-primary);
+  }
+</style>

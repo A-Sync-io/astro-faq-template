@@ -1,8 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import FAQAccordion from '../components/FAQAccordion.astro';
-import { SITE } from '../config';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import { SITE } from '../../config';
 
 const allFAQs = await getCollection('faq', ({ data }) => !data.draft);
 const sortedFAQs = allFAQs.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -25,7 +25,6 @@ const categories = [...new Set(allFAQs.map((faq) => faq.data.category))];
     description: `Explore our complete collection of ${totalFAQs} frequently asked questions.`,
     type: 'website'
   }}
-003e
   <!-- Page Header -->
   <section class="bg-[var(--color-secondary)] text-[var(--color-text-inverted)] py-16 md:py-20">
     <div class="container">
@@ -75,7 +74,7 @@ const categories = [...new Set(allFAQs.map((faq) => faq.data.category))];
           <a 
             href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}
             class="flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium text-[var(--color-text-secondary)] bg-[var(--color-bg-secondary)] hover:bg-[var(--color-bg-tertiary)] transition-colors"
-003e
+          >
             {category}
           </a>
         ))}
@@ -86,13 +85,7 @@ const categories = [...new Set(allFAQs.map((faq) => faq.data.category))];
   <!-- FAQ Accordion -->
   <section class="py-12 md:py-16 bg-[var(--color-bg-secondary)]">
     <div class="container max-w-4xl">
-      <FAQAccordion faqs={sortedFAQs}>
-        {faqsWithContent.map((faq, index) => (
-          <div slot={`content-${index}`}>
-            <faq.Content />
-          </div>
-        ))}
-      </FAQAccordion>
+      <FAQAccordion faqs={faqsWithContent} />
     </div>
   </section>
 </Layout>
