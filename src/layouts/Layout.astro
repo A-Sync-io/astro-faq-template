@@ -8,9 +8,10 @@ import '../styles/global.css';
 
 interface Props {
   seo?: Partial<SEOProps>;
+  showSidebar?: boolean;
 }
 
-const { seo = {} } = Astro.props;
+const { seo = {}, showSidebar = true } = Astro.props;
 
 const defaultSEO: SEOProps = {
   title: SITE.title,
@@ -27,41 +28,26 @@ const mergedSEO = { ...defaultSEO, ...seo };
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <SEO {...mergedSEO} />
-    
-    <!-- Preconnect to external domains -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    
-    <!-- Theme color for mobile browsers -->
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#E30613" />
   </head>
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <Header />
     
-    <div class="flex flex-col min-h-screen">
-      <Header />
-      
-      <main id="main-content" class="flex-grow" role="main">
+    <div class="site-wrapper">
+      <main class="main-content" class:list={[{ 'has-sidebar': showSidebar }]}>
         <slot />
       </main>
       
-      <Footer />
+      {showSidebar && (
+        <aside class="sidebar">
+          <slot name="sidebar" />
+        </aside>
+      )}
     </div>
     
-    <!-- Analytics placeholder - replace GA_MEASUREMENT_ID with your ID -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'GA_MEASUREMENT_ID', {
-        'send_page_view': true,
-        'cookie_flags': 'SameSite=None;Secure',
-        'anonymize_ip': true
-      });
-    </script>
+    <Footer />
   </body>
 </html>

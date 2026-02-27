@@ -2,72 +2,146 @@
 import { SITE, NAV } from '../config';
 ---
 
-<footer class="bg-[var(--color-secondary)] text-[var(--color-text-inverted)]">
-  <div class="container py-16 md:py-20">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-      
-      {/* Brand Column */}
-      <div class="lg:col-span-1">
-        <a href="/" class="flex items-center gap-3 mb-6">
-          <div class="w-10 h-10 rounded-lg bg-[var(--color-primary)] flex items-center justify-center">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <span class="text-xl font-bold">{SITE.name}</span>
-        </a>
-        
-        <p class="text-[var(--color-text-tertiary)] text-[0.9375rem] leading-relaxed mb-6">
-          {SITE.description}
-        </p>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <!-- Column 1: Brand -->
+      <div class="footer-column">
+        <div class="footer-brand">
+          <svg class="footer-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="6" fill="#E30613"/>
+            <path d="M8 10h16M8 16h16M8 22h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="footer-brand-name">{SITE.name}</span>
+        </div>
+        <p class="footer-description">{SITE.description}</p>
       </div>
-      
-      {/* Quick Links */}
-      <div>
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">Quick Links</h3>
-        <ul class="space-y-3">
+
+      <!-- Column 2: Quick Links -->
+      <div class="footer-column">
+        <h3 class="footer-column-title">Quick Links</h3>
+        <ul class="footer-links">
           {NAV.main.map((item) => (
-            <li>
-              <a href={item.href} class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">
-                {item.label}
-              </a>
-            </li>
+            <li><a href={item.href}>{item.label}</a></li>
           ))}
+          <li><a href="/search">Search</a></li>
         </ul>
       </div>
-      
-      {/* Categories placeholder */}
-      <div>
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">Categories</h3>
-        <ul class="space-y-3">
-          <li><a href="/faq" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Getting Started</a></li>
-          <li><a href="/faq" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Customization</a></li>
-          <li><a href="/faq" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Content Management</a></li>
+
+      <!-- Column 3: Categories -->
+      <div class="footer-column">
+        <h3 class="footer-column-title">Categories</h3>
+        <ul class="footer-links">
+          <li><a href="/faq">Getting Started</a></li>
+          <li><a href="/faq">Customization</a></li>
+          <li><a href="/faq">Content Management</a></li>
+          <li><a href="/categories">All Categories</a></li>
         </ul>
       </div>
-      
-      {/* Contact */}
-      <div>
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">Support</h3>
-        <ul class="space-y-3">
-          <li><a href="/faq" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Help Center</a></li>
-          <li><a href="#" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Contact Us</a></li>
-          <li><a href="#" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Privacy Policy</a></li>
+
+      <!-- Column 4: Support -->
+      <div class="footer-column">
+        <h3 class="footer-column-title">Support</h3>
+        <ul class="footer-links">
+          <li><a href="/faq">Help Center</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
         </ul>
       </div>
     </div>
-    
-    {/* Bottom Bar */}
-    <div class="mt-16 pt-8 border-t border-[var(--color-secondary-light)]">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-sm text-[var(--color-text-tertiary)]">
-          &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
-        </p>
-        
-        <p class="text-sm text-[var(--color-text-muted)]">
-          Built with <a href="https://astro.build" class="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-inverted)]">Astro</a>
-        </p>
-      </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
     </div>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    background: var(--color-bg-dark);
+    color: var(--color-text-inverted);
+    margin-top: var(--space-3xl);
+    padding: var(--space-2xl) 0 var(--space-lg);
+  }
+
+  .footer-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .footer-column {
+    /* Column styling */
+  }
+
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .footer-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .footer-brand-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-text-inverted);
+  }
+
+  .footer-description {
+    font-size: 0.9375rem;
+    color: var(--color-text-tertiary);
+    line-height: 1.6;
+  }
+
+  .footer-column-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-md);
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .footer-links li {
+    margin-bottom: var(--space-sm);
+  }
+
+  .footer-links a {
+    color: var(--color-text-tertiary);
+    font-size: 0.9375rem;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .footer-links a:hover {
+    color: var(--color-text-inverted);
+    text-decoration: none;
+  }
+
+  .footer-bottom {
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-secondary-light);
+    text-align: center;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+</style>

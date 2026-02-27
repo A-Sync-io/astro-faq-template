@@ -1,113 +1,203 @@
 ---
-import { SITE, NAV, THEME } from '../config';
+import { SITE, NAV } from '../config';
 ---
 
-<header class="sticky top-0 z-50 bg-[var(--color-bg-primary)]/95 backdrop-blur-md border-b border-[var(--color-border-light)]">
-  <div class="container">
-    <div class="flex items-center justify-between h-16 md:h-20">
-      
-      {/* Logo */}
-      <a href="/" class="flex items-center gap-3 group" aria-label={`${SITE.name} - Home`}>
-        {/* Logo Icon */}
-        <div class="w-10 h-10 rounded-lg bg-[var(--color-primary)] flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
-          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-        </div>
-        
-        {/* Logo Text */}
-        <div class="flex flex-col">
-          <span class="text-lg md:text-xl font-bold tracking-tight text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors">
-            {SITE.name}
-          </span>
-        </div>
+<header class="site-header">
+  <div class="header-inner">
+    <!-- Left: Back button (optional) + Logo -->
+    <div class="header-left">
+      <a href="/" class="logo">
+        <svg class="logo-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="32" height="32" rx="6" fill="#E30613"/>
+          <path d="M8 10h16M8 16h16M8 22h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span class="logo-text">{SITE.name}</span>
+      </a>
+    </div>
+
+    <!-- Center: Navigation -->
+    <nav class="header-nav" aria-label="Main navigation">
+      {NAV.main.map((item) => (
+        <a href={item.href} class="nav-link">{itemitem.label}</a>
+      ))}
+    </nav>
+
+    <!-- Right: Actions -->
+    <div class="header-actions">
+      <a href="/search" class="action-btn" aria-label="Search">
+        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
       </a>
       
-      {/* Desktop Navigation */}
-      <nav class="hidden md:flex items-center gap-1" aria-label="Main navigation">
-        {NAV.main.map((item) => (
-          <a 
-            href={item.href} 
-            class="px-4 py-2 text-[0.9375rem] font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] rounded-md hover:bg-[var(--color-bg-secondary)] transition-all"
-          >
-            {item.label}
-          </a>
-        ))}
-      </nav>
+      <a href="/faq" class="btn btn-primary">Browse FAQ</a>
       
-      {/* Right Side Actions */}
-      <div class="flex items-center gap-2">
-        
-        {/* Search Button */}
-        <a 
-          href="/search" 
-          class="p-2.5 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-secondary)] rounded-lg transition-all"
-          aria-label="Search"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-          </svg>
-        </a>
-        
-        {/* CTA Button (Desktop) */}
-        <a 
-          href="/faq" 
-          class="hidden md:inline-flex btn btn-primary"
-        >
-          Browse FAQ
-        </a>
-        
-        {/* Mobile Menu Button */}
-        <button 
-          type="button"
-          id="mobile-menu-btn"
-          class="md:hidden p-2.5 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-secondary)] rounded-lg transition-all"
-          aria-label="Open menu"
-          aria-expanded="false"
-          aria-controls="mobile-menu"
-        >
-          <svg class="w-6 h-6 menu-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-          </svg>
-          <svg class="w-6 h-6 close-icon hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-          </svg>
-        </button>
-      </div>
+      <button class="menu-toggle" aria-label="Menu" aria-expanded="false">
+        <span class="hamburger"></span>
+      </button>
     </div>
-  </div>
-  
-  {/* Mobile Menu */}
-  <div id="mobile-menu" class="hidden md:hidden border-t border-[var(--color-border-light)] bg-[var(--color-bg-primary)]">
-    <nav class="container py-4 space-y-1" aria-label="Mobile navigation">
-      {NAV.main.map((item) => (
-        <a 
-          href={item.href} 
-          class="block px-4 py-3 text-[0.9375rem] font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-secondary)] rounded-lg transition-all"
-        >
-          {item.label}
-        </a>
-      ))}
-      <div class="pt-4 mt-4 border-t border-[var(--color-border-light)]">
-        <a href="/faq" class="btn btn-primary w-full">
-          Browse FAQ
-        </a>
-      </div>
-    </nav>
   </div>
 </header>
 
-<script>
-  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  const menuIcon = mobileMenuBtn?.querySelector('.menu-icon');
-  const closeIcon = mobileMenuBtn?.querySelector('.close-icon');
-  
-  mobileMenuBtn?.addEventListener('click', () => {
-    const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true';
-    mobileMenuBtn.setAttribute('aria-expanded', (!isExpanded).toString());
-    mobileMenu?.classList.toggle('hidden');
-    menuIcon?.classList.toggle('hidden');
-    closeIcon?.classList.toggle('hidden');
-  });
-</script>
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    gap: 1rem;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--color-text-primary);
+  }
+
+  .logo-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .header-nav {
+    display: none;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .header-nav {
+      display: flex;
+    }
+  }
+
+  .nav-link {
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .nav-link:hover {
+    color: var(--color-primary);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    color: var(--color-text-secondary);
+    transition: all 0.15s;
+  }
+
+  .action-btn:hover {
+    background: var(--color-bg-secondary);
+    color: var(--color-primary);
+  }
+
+  .action-btn .icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-700);
+    transform: translateY(-1px);
+  }
+
+  .menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  @media (min-width: 768px) {
+    .menu-toggle {
+      display: none;
+    }
+  }
+
+  .hamburger {
+    position: relative;
+    width: 20px;
+    height: 2px;
+    background: var(--color-text-primary);
+    transition: background 0.2s;
+  }
+
+  .hamburger::before,
+  .hamburger::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-text-primary);
+    transition: transform 0.2s;
+  }
+
+  .hamburger::before {
+    top: -6px;
+  }
+
+  .hamburger::after {
+    top: 6px;
+  }
+</style>
