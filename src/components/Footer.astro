@@ -2,29 +2,33 @@
 import { SITE, NAV } from '../config';
 ---
 
-<footer class="bg-slate-900 text-slate-300">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <!-- Brand -->
-      <div class="space-y-4">
-        <div class="flex items-center space-x-2">
-          <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-          </svg>
-          <span class="text-xl font-bold text-white">{SITE.name}</span>
-        </div>
-        <p class="text-sm text-slate-400">
+<footer class="bg-[var(--color-secondary)] text-[var(--color-text-inverted)]">
+  <div class="container py-16 md:py-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+      
+      {/* Brand Column */}
+      <div class="lg:col-span-1">
+        <a href="/" class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 rounded-lg bg-[var(--color-primary)] flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <span class="text-xl font-bold">{SITE.name}</span>
+        </a>
+        
+        <p class="text-[var(--color-text-tertiary)] text-[0.9375rem] leading-relaxed mb-6">
           {SITE.description}
         </p>
       </div>
       
-      <!-- Quick Links -->
+      {/* Quick Links */}
       <div>
-        <h3 class="text-white font-semibold mb-4">Quick Links</h3>
-        <ul class="space-y-2 text-sm">
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">Quick Links</h3>
+        <ul class="space-y-3">
           {NAV.main.map((item) => (
             <li>
-              <a href={item.href} class="hover:text-blue-400 transition-colors">
+              <a href={item.href} class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">
                 {item.label}
               </a>
             </li>
@@ -32,27 +36,38 @@ import { SITE, NAV } from '../config';
         </ul>
       </div>
       
-      <!-- Categories placeholder -->
+      {/* Categories placeholder */}
       <div>
-        <h3 class="text-white font-semibold mb-4">Categories</h3>
-        <p class="text-sm text-slate-400">
-          Add your categories here or customize this section in <code>src/components/Footer.astro</code>
-        </p>
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">Categories</h3>
+        <ul class="space-y-3">
+          <li><a href="/faq" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Getting Started</a></li>
+          <li><a href="/faq" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Customization</a></li>
+          <li><a href="/faq" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Content Management</a></li>
+        </ul>
       </div>
       
-      <!-- Contact -->
+      {/* Contact */}
       <div>
-        <h3 class="text-white font-semibold mb-4">Contact</h3>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/about" class="hover:text-blue-400 transition-colors">About</a></li>
-          <li><a href="/privacy" class="hover:text-blue-400 transition-colors">Privacy Policy</a></li>
-          <li><a href="/contact" class="hover:text-blue-400 transition-colors">Contact Us</a></li>
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-4">Support</h3>
+        <ul class="space-y-3">
+          <li><a href="/faq" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Help Center</a></li>
+          <li><a href="#" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Contact Us</a></li>
+          <li><a href="#" class="text-[0.9375rem] text-[var(--color-text-secondary)] hover:text-[var(--color-text-inverted)] transition-colors">Privacy Policy</a></li>
         </ul>
       </div>
     </div>
     
-    <div class="mt-8 pt-8 border-t border-slate-800 text-sm text-slate-500">
-      <p>&copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.</p>
+    {/* Bottom Bar */}
+    <div class="mt-16 pt-8 border-t border-[var(--color-secondary-light)]">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-sm text-[var(--color-text-tertiary)]">
+          &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
+        </p>
+        
+        <p class="text-sm text-[var(--color-text-muted)]">
+          Built with <a href="https://astro.build" class="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-inverted)]">Astro</a>
+        </p>
+      </div>
     </div>
   </div>
 </footer>

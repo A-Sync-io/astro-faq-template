@@ -22,57 +22,60 @@ const categoryCounts = sortedCategories.map(category => ({
     description: 'Browse all FAQ categories to find answers by topic.',
     type: 'website'
   }}
->
+003e
   <!-- Page Header -->
-  <section class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <nav class="text-sm mb-2" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-2">
-          <li>
-            <a href="/" class="text-slate-400 hover:text-white transition-colors">Home</a>
-          </li>
-          <li class="text-slate-500">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </li>
-          <li class="text-sky-400">Categories</li>
-        </ol>
+  <section class="bg-[var(--color-secondary)] text-[var(--color-text-inverted)] py-16 md:py-20">
+    <div class="container">
+      <nav class="flex items-center gap-2 text-sm mb-6" aria-label="Breadcrumb">
+        <a href="/" class="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-inverted)] transition-colors">Home</a>
+        <svg class="w-4 h-4 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        
+        <span class="text-[var(--color-primary)]">Categories</span>
       </nav>
       
-      <h1 class="text-3xl md:text-4xl font-bold">Categories</h1>
-      <p class="text-slate-300 mt-2">Browse questions by topic</p>
+      <div>
+        <span class="label-text text-[var(--color-text-tertiary)] mb-2 block">Browse by Topic</span>
+        <h1 class="editorial-title text-[var(--color-text-inverted)]">Categories</h1>
+        <p class="text-[var(--color-text-tertiary)] text-lg mt-4">Explore questions by category</p>
+      </div>
     </div>
   </section>
 
   <!-- Categories Grid -->
-  <section class="py-12 bg-slate-50 dark:bg-slate-800/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section class="py-12 md:py-16 bg-[var(--color-bg-secondary)]">
+    <div class="container">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categoryCounts.map((category) => (
           <a 
             href={`/categories/${category.data.slug}`}
-            class="group bg-white dark:bg-slate-800 rounded-lg p-6 border border-slate-200 dark:border-slate-700 hover:border-sky-500 dark:hover:border-sky-500 hover:shadow-lg transition-all"
-          >
-            <div class="flex items-start justify-between">
-              <div>
-                <h2 class="text-xl font-semibold text-slate-900 dark:text-white group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
-                  {category.data.name}
-                </h2>
-                <p class="text-slate-600 dark:text-slate-300 mt-2 text-sm">
-                  {category.data.description}
-                </p>
+            class="card card-interactive p-6 group"
+003e
+            <div class="flex items-start justify-between mb-4">
+              <div class="w-12 h-12 rounded-xl bg-[var(--color-primary-50)] text-[var(--color-primary)] flex items-center justify-center group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
               </div>
               
-              <span class="flex-shrink-0 ml-4 inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 group-hover:bg-sky-100 dark:group-hover:bg-sky-900 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors">
+              <span class="flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] font-bold">
                 {category.count}
               </span>
             </div>
             
-            <div class="mt-4 flex items-center text-sm text-sky-600 dark:text-sky-400 font-medium">
+            <h2 class="text-xl font-bold text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors mb-2">
+              {category.data.name}
+            </h2>
+            
+            <p class="text-[var(--color-text-secondary)] text-[0.9375rem] mb-4">
+              {category.data.description}
+            </p>
+            
+            <div class="flex items-center text-sm font-semibold text-[var(--color-primary)]">
               Browse questions
-              <svg class="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
               </svg>
             </div>
           </a>

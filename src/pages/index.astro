@@ -18,63 +18,48 @@ const totalFAQs = allFAQs.length;
 
 <Layout>
   <!-- Hero Section -->
-  <section class="relative bg-gradient-to-br from-slate-900 to-slate-800 text-white">
-    <div class="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
+  <section class="relative bg-[var(--color-secondary)] text-[var(--color-text-inverted)] overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0); background-size: 32px 32px;"></div>
+    </div>
     
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
-      <div class="text-center max-w-3xl mx-auto">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-          Welcome to <span class="text-blue-400">{SITE.name}</span>
+    <div class="container relative py-20 md:py-28">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-primary)]/20 text-[var(--color-primary)] text-sm font-medium mb-6">
+          <span class="w-2 h-2 rounded-full bg-[var(--color-primary)] animate-pulse"></span>
+          {totalFAQs}+ questions answered
+        </div>
+        
+        <h1 class="editorial-title text-[var(--color-text-inverted)] mb-6">
+          {SITE.name}
         </h1>
         
-        <p class="text-lg md:text-xl text-slate-300 mb-8">
+        <p class="editorial-subtitle text-[var(--color-text-tertiary)] mb-8 max-w-2xl">
           {SITE.description}
         </p>
         
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a 
-            href="/faq" 
-            class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
-003e
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="/faq" class="btn btn-primary text-base px-8 py-4">
             Browse All Questions
-            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
           </a>
           
-          <a 
-            href="/search" 
-            class="inline-flex items-center justify-center px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg backdrop-blur-sm transition-colors"
-          >
+          <a href="/search" class="btn btn-secondary text-base px-8 py-4 border-[var(--color-secondary-lighter)] text-[var(--color-text-inverted)] hover:bg-[var(--color-secondary-lighter)]">
             Search
           </a>
-        </div>
-        
-        <div class="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-slate-400">
-          <span class="flex items-center">
-            <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            {totalFAQs}+ questions answered
-          </span>
-          
-          <span class="flex items-center">
-            <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            Regularly updated
-          </span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Quick Search Section -->
-  <section class="py-12 bg-white dark:bg-slate-900">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Search Our FAQ</h2>
-        <p class="text-slate-600 dark:text-slate-300">Find answers quickly</p>
+  <!-- Search Section -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-secondary)]">
+    <div class="container">
+      <div class="max-w-3xl mx-auto text-center mb-10">
+        <h2 class="section-title mb-4">Find Answers Fast</h2>
+        <p class="text-[var(--color-text-secondary)] text-lg">Search our knowledge base for instant answers</p>
       </div>
       
       <Search />
@@ -82,31 +67,41 @@ const totalFAQs = allFAQs.length;
   </section>
 
   <!-- Categories Section -->
-  <section class="py-12 bg-slate-50 dark:bg-slate-800/50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-10">
-        <h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
-          Browse by Category
-        </h2>
-        <p class="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
-          Select a category to find questions and answers in specific areas
-        </p>
+  <section class="py-16 md:py-20">
+    <div class="container">
+      <div class="flex items-end justify-between mb-10">
+        <div>
+          <span class="label-text mb-2 block">Browse by Topic</span>
+          <h2 class="section-title">Categories</h2>
+        </div>
+        
+        <a href="/categories" class="hidden sm:flex items-center gap-1 text-[var(--color-primary)] font-semibold hover:gap-2 transition-all">
+          View all
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </a>
       </div>
       
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {categories.map((category) => {
           const count = allFAQs.filter(faq => faq.data.category === category).length;
           return (
             <a 
-              href={`/category/${category.toLowerCase().replace(/\s+/g, '-')}`}
-              class="group bg-white dark:bg-slate-800 rounded-lg p-6 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-md transition-all"
+              href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}
+              class="group card p-6 flex flex-col"
             >
-              <h3 class="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              <div class="w-12 h-12 rounded-xl bg-[var(--color-primary-50)] text-[var(--color-primary)] flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                </svg>
+              </div>
+              
+              <h3 class="text-lg font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors mb-1">
                 {category}
               </h3>
-              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                {count} questions
-              </p>
+              
+              <p class="text-sm text-[var(--color-text-tertiary)]">{count} questions</p>
             </a>
           );
         })}
@@ -116,25 +111,18 @@ const totalFAQs = allFAQs.length;
 
   <!-- Featured FAQs -->
   {featuredFAQs.length > 0 && (
-    <section class="py-12 bg-white dark:bg-slate-900">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between mb-8">
+    <section class="py-16 md:py-20 bg-[var(--color-bg-secondary)]">
+      <div class="container">
+        <div class="flex items-end justify-between mb-10">
           <div>
-            <h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
-              Featured Questions
-            </h2>
-            <p class="text-slate-600 dark:text-slate-300 mt-1">
-              Popular questions from our visitors
-            </p>
+            <span class="label-text mb-2 block">Most Popular</span>
+            <h2 class="section-title">Featured Questions</h2>
           </div>
           
-          <a 
-            href="/faq" 
-            class="hidden sm:inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
-003e
+          <a href="/faq" class="hidden sm:flex items-center gap-1 text-[var(--color-primary)] font-semibold hover:gap-2 transition-all">
             View all
-            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
             </svg>
           </a>
         </div>
@@ -145,18 +133,35 @@ const totalFAQs = allFAQs.length;
           ))}
         </div>
         
-        <div class="mt-8 text-center sm:hidden">
-          <a 
-            href="/faq" 
-            class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
-003e
+        <div class="mt-10 text-center sm:hidden">
+          <a href="/faq" class="btn btn-secondary">
             View all questions
-            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
             </svg>
           </a>
         </div>
       </div>
     </section>
   )}
+
+  <!-- CTA Section -->
+  <section class="py-16 md:py-20">
+    <div class="container">
+      <div class="card p-8 md:p-12 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-700)] text-white text-center">
+        <h2 class="text-3xl md:text-4xl font-bold mb-4">Can't find what you're looking for?</h2>
+        
+        <p class="text-lg text-white/80 mb-8 max-w-2xl mx-auto">
+          Our team is here to help. Reach out and we'll get back to you as soon as possible.
+        </p>
+        
+        <a href="#" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-[var(--color-primary)] font-semibold rounded-lg hover:bg-[var(--color-bg-secondary)] transition-colors">
+          Contact Support
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
 </Layout>

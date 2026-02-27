@@ -10,29 +10,29 @@ import Search from '../components/Search.astro';
     type: 'website'
   }}
 003e
-  <section class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <nav class="text-sm mb-4" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-2">
-          <li>
-            <a href="/" class="text-slate-400 hover:text-white transition-colors">Home</a>
-          </li>
-          <li class="text-slate-500">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-          </li>
-          <li class="text-blue-400">Search</li>
-        </ol>
+  <!-- Page Header -->
+  <section class="bg-[var(--color-secondary)] text-[var(--color-text-inverted)] py-16 md:py-20">
+    <div class="container">
+      <nav class="flex items-center gap-2 text-sm mb-6" aria-label="Breadcrumb">
+        <a href="/" class="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-inverted)] transition-colors">Home</a>
+        <svg class="w-4 h-4 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+        
+        <span class="text-[var(--color-primary)]">Search</span>
       </nav>
       
-      <h1 class="text-3xl md:text-4xl font-bold">Search</h1>
-      <p class="text-slate-300 mt-2">Find answers quickly</p>
+      <div class="max-w-3xl">
+        <span class="label-text text-[var(--color-text-tertiary)] mb-2 block">Find Answers</span>
+        <h1 class="editorial-title text-[var(--color-text-inverted)]">Search</h1>
+        <p class="text-[var(--color-text-tertiary)] text-lg mt-4">Find answers quickly across our knowledge base</p>
+      </div>
     </div>
   </section>
 
-  <section class="py-12 bg-white dark:bg-slate-900">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- Search Section -->
+  <section class="py-12 md:py-16 bg-[var(--color-bg-secondary)]">
+    <div class="container">
       <Search />
     </div>
   </section>
