@@ -1,0 +1,162 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import FAQCard from '../components/FAQCard.astro';
+import Search from '../components/Search.astro';
+import { SITE } from '../config';
+
+const allFAQs = await getCollection('faq', ({ data }) => !data.draft);
+const featuredFAQs = allFAQs
+  .filter((faq) => faq.data.featured)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6);
+
+const categories = [...new Set(allFAQs.map((faq) => faq.data.category))];
+
+const totalFAQs = allFAQs.length;
+---
+
+<Layout>
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+    <div class="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      <div class="text-center max-w-3xl mx-auto">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+          Welcome to <span class="text-blue-400">{SITE.name}</span>
+        </h1>
+        
+        <p class="text-lg md:text-xl text-slate-300 mb-8">
+          {SITE.description}
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a 
+            href="/faq" 
+            class="inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
+003e
+            Browse All Questions
+            <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+            </svg>
+          </a>
+          
+          <a 
+            href="/search" 
+            class="inline-flex items-center justify-center px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg backdrop-blur-sm transition-colors"
+          >
+            Search
+          </a>
+        </div>
+        
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-6 text-sm text-slate-400">
+          <span class="flex items-center">
+            <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            {totalFAQs}+ questions answered
+          </span>
+          
+          <span class="flex items-center">
+            <svg class="w-5 h-5 mr-2 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Regularly updated
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Search Section -->
+  <section class="py-12 bg-white dark:bg-slate-900">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Search Our FAQ</h2>
+        <p class="text-slate-600 dark:text-slate-300">Find answers quickly</p>
+      </div>
+      
+      <Search />
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="py-12 bg-slate-50 dark:bg-slate-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+          Browse by Category
+        </h2>
+        <p class="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+          Select a category to find questions and answers in specific areas
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {categories.map((category) => {
+          const count = allFAQs.filter(faq => faq.data.category === category).length;
+          return (
+            <a 
+              href={`/category/${category.toLowerCase().replace(/\s+/g, '-')}`}
+              class="group bg-white dark:bg-slate-800 rounded-lg p-6 border border-slate-200 dark:border-slate-700 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-md transition-all"
+            >
+              <h3 class="font-semibold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                {category}
+              </h3>
+              <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                {count} questions
+              </p>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured FAQs -->
+  {featuredFAQs.length > 0 && (
+    <section class="py-12 bg-white dark:bg-slate-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between mb-8">
+          <div>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">
+              Featured Questions
+            </h2>
+            <p class="text-slate-600 dark:text-slate-300 mt-1">
+              Popular questions from our visitors
+            </p>
+          </div>
+          
+          <a 
+            href="/faq" 
+            class="hidden sm:inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+003e
+            View all
+            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredFAQs.map((faq) => (
+            <FAQCard item={faq} />
+          ))}
+        </div>
+        
+        <div class="mt-8 text-center sm:hidden">
+          <a 
+            href="/faq" 
+            class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
+003e
+            View all questions
+            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>

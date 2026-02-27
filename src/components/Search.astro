@@ -1,0 +1,185 @@
+---
+import { getCollection } from 'astro:content';
+
+const allFAQs = await getCollection('faq', ({ data }) => !data.draft);
+const searchIndex = allFAQs.map((faq) => ({
+  id: faq.id,
+  slug: faq.slug,
+  title: faq.data.title,
+  description: faq.data.description,
+  category: faq.data.category,
+  tags: faq.data.tags
+}));
+---
+
+<div class="w-full max-w-2xl mx-auto">
+  <form role="search" class="relative" onsubmit="return false;">
+    <label for="search-input" class="sr-only">Search FAQ entries</label>
+    
+    <div class="relative">
+      <svg 
+        class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24" 
+        aria-hidden="true"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+      </svg>
+      
+      <input
+        type="search"
+        id="search-input"
+        name="q"
+        placeholder="Search for questions..."
+        class="w-full pl-12 pr-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        maxlength="100"
+      />
+      
+      <button 
+        type="button"
+        id="search-clear"
+        class="hidden absolute right-4 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+        aria-label="Clear search"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <div id="search-hint" class="mt-2 text-sm text-slate-500 dark:text-slate-400">
+      Type to search among {allFAQs.length} questions
+    </div>
+  </form>
+  
+  <div id="search-results" class="mt-6 space-y-4">
+    <!-- Results will be injected here -->
+  </div>
+  
+  <div id="search-empty" class="hidden mt-6 text-center py-8">
+    <svg class="mx-auto w-12 h-12 text-slate-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+    <p class="text-slate-600 dark:text-slate-300">No results found for your search.</p>
+    <p class="text-sm text-slate-500 mt-1">Try different keywords or browse by category.</p>
+  </div>
+</div>
+
+<script define:vars={{ searchIndex }}>
+  // Simple fuzzy search implementation
+  function createSearchIndex(items) {
+    return items.map(item => ({
+      ...item,
+      searchText: `${item.title} ${item.description} ${item.category} ${item.tags.join(' ')}`.toLowerCase()
+    }));
+  }
+  
+  function search(query, items) {
+    if (!query.trim()) return [];
+    
+    const normalizedQuery = query.toLowerCase().trim();
+    const terms = normalizedQuery.split(/\s+/);
+    
+    return items
+      .map(item => {
+        let score = 0;
+        
+        terms.forEach(term => {
+          if (item.title.toLowerCase().includes(term)) score += 10;
+          if (item.searchText.includes(term)) score += 5;
+          if (item.searchText.includes(term.slice(0, Math.max(2, term.length - 2)))) score += 2;
+        });
+        
+        const allTermsMatch = terms.every(term => item.searchText.includes(term));
+        if (allTermsMatch) score += 5;
+        
+        return { item, score };
+      })
+      .filter(result => result.score > 0)
+      .sort((a, b) => b.score - a.score);
+  }
+  
+  const index = createSearchIndex(searchIndex);
+  const searchInput = document.getElementById('search-input');
+  const searchClear = document.getElementById('search-clear');
+  const searchResults = document.getElementById('search-results');
+  const searchEmpty = document.getElementById('search-empty');
+  const searchHint = document.getElementById('search-hint');
+  
+  function renderResults(results) {
+    if (results.length === 0) {
+      searchResults.innerHTML = '';
+      searchEmpty.classList.remove('hidden');
+      searchHint.textContent = 'No results found';
+      return;
+    }
+    
+    searchEmpty.classList.add('hidden');
+    searchHint.textContent = `${results.length} results found`;
+    
+    searchResults.innerHTML = results.map(({ item }) => `
+      <article class="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-200 dark:border-slate-700 p-4 hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-xs font-medium text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded">${item.category}</span>
+        </div>
+        <h3 class="text-lg font-semibold mb-1">
+          <a href="/faq/${item.slug}" class="text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">${item.title}</a>
+        </h3>
+        <p class="text-slate-600 dark:text-slate-300 text-sm">${item.description}</p>
+        <div class="mt-3 flex flex-wrap gap-1">
+          ${item.tags.map(tag => `
+            <span class="text-xs text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded">#${tag}</span>
+          `).join('')}
+        </div>
+      </article>
+    `).join('');
+  }
+  
+  function clearSearch() {
+    searchInput.value = '';
+    searchClear.classList.add('hidden');
+    searchResults.innerHTML = '';
+    searchEmpty.classList.add('hidden');
+    searchHint.textContent = `Type to search among ${index.length} questions`;
+    searchInput.focus();
+  }
+  
+  let debounceTimer;
+  searchInput?.addEventListener('input', (e) => {
+    const query = e.target.value;
+    
+    if (query.length > 0) {
+      searchClear.classList.remove('hidden');
+    } else {
+      searchClear.classList.add('hidden');
+    }
+    
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      if (query.length < 2) {
+        searchResults.innerHTML = '';
+        searchEmpty.classList.add('hidden');
+        searchHint.textContent = query.length > 0 ? 'Type at least 2 characters to search' : `Type to search among ${index.length} questions`;
+        return;
+      }
+      
+      const results = search(query, index);
+      renderResults(results);
+    }, 150);
+  });
+  
+  searchClear?.addEventListener('click', clearSearch);
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlQuery = urlParams.get('q');
+  if (urlQuery) {
+    searchInput.value = urlQuery;
+    searchClear.classList.remove('hidden');
+    const results = search(urlQuery, index);
+    renderResults(results);
+  }
+</script>

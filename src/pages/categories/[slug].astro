@@ -1,0 +1,87 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import FAQCard from '../../components/FAQCard.astro';
+
+// Generate static paths for all categories
+export async function getStaticPaths() {
+  const categories = await getCollection('categories');
+  
+  return categories.map((category) => ({
+    params: { slug: category.data.slug },
+    props: { category }
+  }));
+}
+
+const { category } = Astro.props;
+
+// Get FAQs in this category
+const categoryFAQs = await getCollection('faq', ({ data }) => 
+  !data.draft && 
+  data.category.toLowerCase().replace(/\s+/g, '-') === category.data.slug
+);
+
+const sortedFAQs = categoryFAQs.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<Layout 
+  seo={{
+    title: `${category.data.name} - FAQ Template`,
+    description: category.data.description,
+    type: 'website'
+  }}
+>
+  <!-- Page Header -->
+  <section class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="text-sm mb-2" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2">
+          <li>
+            <a href="/" class="text-slate-400 hover:text-white transition-colors">Home</a>
+          </li>
+          <li class="text-slate-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </li>
+          <li>
+            <a href="/categories" class="text-slate-400 hover:text-white transition-colors">Categories</a>
+          </li>
+          <li class="text-slate-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </li>
+          <li class="text-sky-400">{category.data.name}</li>
+        </ol>
+      </nav>
+      
+      <h1 class="text-3xl md:text-4xl font-bold">{category.data.name}</h1>
+      <p class="text-slate-300 mt-2">{category.data.description}</p>
+      <p class="text-slate-400 mt-4 text-sm">{sortedFAQs.length} questions in this category</p>
+    </div>
+  </section>
+
+  <!-- FAQs Grid -->
+  <section class="py-12 bg-slate-50 dark:bg-slate-800/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {sortedFAQs.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {sortedFAQs.map((faq) => (
+            <FAQCard item={faq} />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <svg class="mx-auto w-16 h-16 text-slate-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <p class="text-slate-600 dark:text-slate-300 text-lg">No questions yet in this category.</p>
+          <a href="/faq" class="inline-block mt-4 text-sky-600 dark:text-sky-400 hover:underline">
+            Browse all questions
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+</Layout>

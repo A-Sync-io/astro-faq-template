@@ -1,0 +1,39 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Search from '../components/Search.astro';
+---
+
+<Layout 
+  seo={{
+    title: 'Search - FAQ Site',
+    description: 'Search through all frequently asked questions',
+    type: 'website'
+  }}
+003e
+  <section class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="text-sm mb-4" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2">
+          <li>
+            <a href="/" class="text-slate-400 hover:text-white transition-colors">Home</a>
+          </li>
+          <li class="text-slate-500">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </li>
+          <li class="text-blue-400">Search</li>
+        </ol>
+      </nav>
+      
+      <h1 class="text-3xl md:text-4xl font-bold">Search</h1>
+      <p class="text-slate-300 mt-2">Find answers quickly</p>
+    </div>
+  </section>
+
+  <section class="py-12 bg-white dark:bg-slate-900">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Search />
+    </div>
+  </section>
+</Layout>

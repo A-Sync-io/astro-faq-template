@@ -1,0 +1,102 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import { SITE } from '../config';
+
+const allFAQs = await getCollection('faq', ({ data }) => !data.draft);
+const sortedFAQs = allFAQs.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Load content for accordion
+const faqsWithContent = await Promise.all(
+  sortedFAQs.map(async (faq) => {
+    const { Content } = await faq.render();
+    return { ...faq, Content };
+  })
+);
+
+const totalFAQs = allFAQs.length;
+const categories = [...new Set(allFAQs.map((faq) => faq.data.category))];
+---
+
+<Layout 
+  seo={{
+    title: `All Questions (${totalFAQs}) - ${SITE.name}`,
+    description: `Explore our complete collection of ${totalFAQs} frequently asked questions.`,
+    type: 'website'
+  }}
+003e
+  <!-- Page Header -->
+  <section class="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <nav class="text-sm mb-2" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+              <li>
+                <a href="/" class="text-slate-400 hover:text-white transition-colors">Home</a>
+              </li>
+              <li class="text-slate-500">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+              </li>
+              <li class="text-blue-400">All Questions</li>
+            </ol>
+          </nav>
+          
+          <h1 class="text-3xl md:text-4xl font-bold">All Questions</h1>
+          <p class="text-slate-300 mt-2">{totalFAQs} frequently asked questions</p>
+        </div>
+        
+        <a 
+          href="/search" 
+          class="inline-flex items-center justify-center px-4 py-2 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg backdrop-blur-sm transition-colors"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          Search
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Filter -->
+  <section class="py-6 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center space-x-4 overflow-x-auto pb-2 scrollbar-hide">
+        <span class="text-sm font-medium text-slate-500 dark:text-slate-400 flex-shrink-0">Filter:</span>
+        
+        <a 
+          href="/faq" 
+          class="flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
+        >
+          All Categories
+        </a>
+        
+        {categories.map((category) => (
+          <a 
+            href={`/category/${category.toLowerCase().replace(/\s+/g, '-')}`}
+            class="flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+          >
+            {category}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Accordion -->
+  <section class="py-12 bg-slate-50 dark:bg-slate-800/50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <FAQAccordion faqs={sortedFAQs}>
+        {faqsWithContent.map((faq, index) => (
+          <div slot={`content-${index}`}>
+            <faq.Content />
+          </div>
+        ))}
+      </FAQAccordion>
+    </div>
+  </section>
+</Layout>
