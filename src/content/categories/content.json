@@ -1,0 +1,6 @@
+{
+  "name": "Content",
+  "description": "Managing and creating FAQ content",
+  "slug": "content",
+  "order": 3
+}
