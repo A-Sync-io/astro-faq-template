@@ -3,7 +3,6 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import TeaserCard from '../components/TeaserCard.astro';
 import { getCollection } from 'astro:content';
-import { SITE } from '../config';
 
 const allFAQs = await getCollection('faq', ({ data }) => !data.draft);
 
@@ -13,259 +12,84 @@ const featuredFAQ = allFAQs.find(f => f.data.featured) || allFAQs[0];
 // Get remaining FAQs for the grid
 const remainingFAQs = allFAQs.filter(f => f.slug !== featuredFAQ?.slug).slice(0, 6);
 
-// Get categories for sidebar
-const categories = [...new Set(allFAQs.map(faq => faq.data.category))];
-
 // Mock "most read" data (in real app, this would come from analytics)
 const mostRead = remainingFAQs.slice(0, 5).map((faq, i) => ({ ...faq, rank: i + 1 }));
 ---
 
 <Layout showSidebar={true}>
   <!-- Main Content -->
-  <div slot="default">
+  <div slot="default" class="flex flex-col gap-12">
     
     <!-- Hero Section -->
     {featuredFAQ && <Hero faq={featuredFAQ} />}
     
-    <!-- FAQ Grid -->
-    <section class="faq-section">
-      <div class="section-header">
-        <h2 class="section-title">Latest Questions</h2>
-        <a href="/faq" class="section-link">View all →</a>
-      </div>
-      
-      <div class="faq-grid">
-        {remainingFAQs.map((faq) => (
-          <TeaserCard faq={faq} />
-        ))}
-      </div>
-    </section>
+    <!-- News Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+      {remainingFAQs.map((faq) => (
+        <TeaserCard faq={faq} />
+      ))}
+    </div>
     
-    <!-- Categories Section -->
-    <section class="categories-section">
-      <h2 class="section-title">Browse by Category</h2>
-      <div class="category-grid">
-        {categories.map((category) => (
-          <a href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`} class="category-card">
-            <span class="category-name">{category}</span>
-            <span class="category-count">{allFAQs.filter(f => f.data.category === category).length} questions</span>
-          </a>
-        ))}
-      </div>
-    </section>
-    
-    <!-- CTA Section -->
-    <section class="cta-section">
-      <div class="cta-box">
-        <h2>Can't find what you're looking for?</h2>
-        <p>Our team is here to help. Browse all questions or get in touch.</p>
-        <div class="cta-buttons">
-          <a href="/faq" class="btn btn-primary">Browse All Questions</a>
-          <a href="/search" class="btn btn-secondary">Search</a>
-        </div>
-      </div>
-    </section>
+    <!-- Load More Button -->
+    <div class="flex justify-center py-8 border-t border-border">
+      <a href="/faq" class="inline-block w-full max-w-[300px] text-center px-6 py-3 text-base font-semibold rounded-md border border-border bg-background text-foreground hover:bg-muted transition-colors">
+        Visa fler
+      </a>
+    </div>
     
   </div>
   
   <!-- Sidebar -->
-  <div slot="sidebar">
+  <div slot="sidebar" class="flex flex-col gap-8">
     
     <!-- Most Read Box -->
-    <div class="sidebar-box">
-      <h3 class="sidebar-box-title">Most Popular</h3>
-      <ol class="most-read-list">
-        {mostRead.map((faq) => (
-          <li class="most-read-item">
-            <span class="most-read-number">{faq.rank}</span>
-            <a href={`/faq/${faq.slug}`} class="most-read-title">{faq.data.title}</a>
+    <div class="bg-card border border-border rounded-lg p-6">
+      <h3 class="text-lg font-bold text-foreground mb-4 pb-2 border-b-2 border-primary">
+        Mest lästa artiklarna
+      </h3>
+      <ol class="list-none p-0 m-0">
+        {mostRead.map((faq, idx) => (
+          <li class={`flex gap-4 py-4 ${idx !== mostRead.length - 1 ? 'border-b border-border' : ''}`}>
+            <span class="shrink-0 w-8 h-8 flex items-center justify-center bg-primary text-white text-sm font-bold rounded-md">
+              {faq.rank}
+            </span>
+            <a href={`/faq/${faq.slug}`} class="text-sm font-semibold text-foreground hover:text-primary leading-snug transition-colors">
+              {faq.data.title}
+            </a>
           </li>
         ))}
       </ol>
     </div>
     
-    <!-- Contact Box -->
-    <div class="sidebar-box contact-box">
-      <h3 class="sidebar-box-title">Need Help?</h3>
-      <p>{SITE.description}</p>
-      <a href="/faq" class="btn btn-primary">Browse FAQ</a>
+    <!-- Podcast Box (Mocking Technokratin) -->
+    <div class="bg-card border border-border rounded-lg p-6">
+      <h3 class="text-lg font-bold text-foreground mb-4 pb-2 border-b-2 border-primary">
+        Podcasts
+      </h3>
+      <div class="mb-4">
+        <div class="w-full aspect-square bg-muted rounded-md mb-4 flex items-center justify-center text-muted-foreground">
+          <svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h4 class="text-lg font-bold text-foreground mb-1">Tech Talks</h4>
+        <p class="text-sm text-muted-foreground">27 februari 2026 • 41 min</p>
+      </div>
+      <a href="/podcasts" class="text-sm font-semibold text-primary hover:underline">
+        Mer från Tech Talks →
+      </a>
     </div>
     
     <!-- Newsletter Box -->
-    <div class="sidebar-box newsletter-box">
-      <h3 class="sidebar-box-title">Stay Updated</h3>
-      <p>Get the latest answers delivered to your inbox.</p>
-      <button class="btn btn-white">Subscribe</button>
-    </div>
-    
-    <!-- Categories Box -->
-    <div class="sidebar-box">
-      <h3 class="sidebar-box-title">Categories</h3>
-      <ul class="sidebar-list">
-        {categories.slice(0, 5).map((category) => (
-          <li>
-            <a href={`/categories/${category.toLowerCase().replace(/\s+/g, '-')}`}>
-              {category}
-            </a>
-          </li>
-        ))}
-      </ul>
+    <div class="bg-primary text-primary-foreground rounded-lg p-6">
+      <h3 class="text-xl font-bold text-white mb-2">Nyhetsbrev</h3>
+      <p class="text-sm text-white/90 mb-4">
+        De viktigaste nyheterna om det digitala näringslivet i din inkorg varje dag.
+      </p>
+      <button class="w-full px-4 py-2 text-sm font-semibold rounded-md bg-white text-primary hover:bg-zinc-100 transition-colors">
+        Anmäl dig
+      </button>
     </div>
     
   </div>
 </Layout>
-
-<style>
-  /* Section Styling */
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: var(--space-lg);
-    padding-bottom: var(--space-sm);
-    border-bottom: 1px solid var(--color-border-light);
-  }
-
-  .section-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-  }
-
-  .section-link {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--color-primary);
-    text-decoration: none;
-  }
-
-  .section-link:hover {
-    text-decoration: underline;
-  }
-
-  /* FAQ Grid */
-  .faq-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: var(--space-xl);
-    margin-bottom: var(--space-2xl);
-  }
-
-  @media (min-width: 768px) {
-    .faq-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  /* Categories Section */
-  .categories-section {
-    margin-bottom: var(--space-2xl);
-  }
-
-  .categories-section .section-title {
-    margin-bottom: var(--space-lg);
-  }
-
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: var(--space-md);
-  }
-
-  .category-card {
-    display: flex;
-    flex-direction: column;
-    padding: var(--space-lg);
-    background: var(--color-bg-secondary);
-    border-radius: var(--radius-lg);
-    text-decoration: none;
-    transition: all 0.15s;
-  }
-
-  .category-card:hover {
-    background: var(--color-bg-tertiary);
-    transform: translateY(-2px);
-    text-decoration: none;
-  }
-
-  .category-name {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-xs);
-  }
-
-  .category-count {
-    font-size: 0.875rem;
-    color: var(--color-text-tertiary);
-  }
-
-  /* CTA Section */
-  .cta-section {
-    margin-bottom: var(--space-2xl);
-  }
-
-  .cta-box {
-    background: var(--color-primary);
-    color: white;
-    padding: var(--space-2xl);
-    border-radius: var(--radius-lg);
-    text-align: center;
-  }
-
-  .cta-box h2 {
-    color: white;
-    font-size: 1.5rem;
-    margin-bottom: var(--space-sm);
-  }
-
-  .cta-box p {
-    opacity: 0.9;
-    margin-bottom: var(--space-lg);
-  }
-
-  .cta-buttons {
-    display: flex;
-    gap: var(--space-md);
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .cta-buttons .btn-primary {
-    background: white;
-    color: var(--color-primary);
-  }
-
-  .cta-buttons .btn-primary:hover {
-    background: var(--color-bg-secondary);
-  }
-
-  .cta-buttons .btn-secondary {
-    background: transparent;
-    color: white;
-    border: 1px solid rgba(255,255,255,0.5);
-  }
-
-  .cta-buttons .btn-secondary:hover {
-    background: rgba(255,255,255,0.1);
-  }
-
-  /* Sidebar List */
-  .sidebar-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .sidebar-list li {
-    margin-bottom: var(--space-sm);
-  }
-
-  .sidebar-list a {
-    color: var(--color-text-secondary);
-    font-size: 0.9375rem;
-  }
-
-  .sidebar-list a:hover {
-    color: var(--color-primary);
-  }
-</style>

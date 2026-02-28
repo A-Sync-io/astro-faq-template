@@ -22,57 +22,56 @@ const categoryCounts = sortedCategories.map(category => ({
     description: 'Browse all FAQ categories to find answers by topic.',
     type: 'website'
   }}
-003e
+>
   <!-- Page Header -->
-  <section class="bg-[var(--color-secondary)] text-[var(--color-text-inverted)] py-16 md:py-20">
-    <div class="container">
+  <section class="bg-card border-b border-border py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <nav class="flex items-center gap-2 text-sm mb-6" aria-label="Breadcrumb">
-        <a href="/" class="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-inverted)] transition-colors">Home</a>
-        <svg class="w-4 h-4 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="/" class="text-muted-foreground hover:text-foreground transition-colors">Home</a>
+        <svg class="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
-        
-        <span class="text-[var(--color-primary)]">Categories</span>
+        <span class="text-primary font-semibold">Categories</span>
       </nav>
       
       <div>
-        <span class="label-text text-[var(--color-text-tertiary)] mb-2 block">Browse by Topic</span>
-        <h1 class="editorial-title text-[var(--color-text-inverted)]">Categories</h1>
-        <p class="text-[var(--color-text-tertiary)] text-lg mt-4">Explore questions by category</p>
+        <span class="text-sm font-bold uppercase tracking-wider text-primary mb-2 block">Browse by Topic</span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">Categories</h1>
+        <p class="text-muted-foreground text-lg mt-4">Explore questions by category</p>
       </div>
     </div>
   </section>
 
   <!-- Categories Grid -->
-  <section class="py-12 md:py-16 bg-[var(--color-bg-secondary)]">
-    <div class="container">
+  <section class="py-12 md:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {categoryCounts.map((category) => (
           <a 
             href={`/categories/${category.data.slug}`}
-            class="card card-interactive p-6 group"
-003e
+            class="block bg-card border border-border rounded-lg p-6 group hover:border-primary transition-colors"
+          >
             <div class="flex items-start justify-between mb-4">
-              <div class="w-12 h-12 rounded-xl bg-[var(--color-primary-50)] text-[var(--color-primary)] flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
                 </svg>
               </div>
               
-              <span class="flex-shrink-0 inline-flex items-center justify-center w-10 h-10 rounded-full bg-[var(--color-bg-secondary)] text-[var(--color-text-secondary)] font-bold">
+              <span class="flex-shrink-0 inline-flex items-center justify-center px-3 py-1 rounded-full bg-muted text-muted-foreground text-sm font-bold">
                 {category.count}
               </span>
             </div>
             
-            <h2 class="text-xl font-bold text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] transition-colors mb-2">
+            <h2 class="text-xl font-bold text-foreground group-hover:text-primary transition-colors mb-2">
               {category.data.name}
             </h2>
             
-            <p class="text-[var(--color-text-secondary)] text-[0.9375rem] mb-4">
+            <p class="text-muted-foreground text-sm mb-4 line-clamp-2">
               {category.data.description}
             </p>
             
-            <div class="flex items-center text-sm font-semibold text-[var(--color-primary)]">
+            <div class="flex items-center text-sm font-semibold text-primary">
               Browse questions
               <svg class="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>

@@ -9,30 +9,29 @@ import Search from '../components/Search.astro';
     description: 'Search through all frequently asked questions',
     type: 'website'
   }}
-003e
+>
   <!-- Page Header -->
-  <section class="bg-[var(--color-secondary)] text-[var(--color-text-inverted)] py-16 md:py-20">
-    <div class="container">
+  <section class="bg-card border-b border-border py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <nav class="flex items-center gap-2 text-sm mb-6" aria-label="Breadcrumb">
-        <a href="/" class="text-[var(--color-text-tertiary)] hover:text-[var(--color-text-inverted)] transition-colors">Home</a>
-        <svg class="w-4 h-4 text-[var(--color-text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <a href="/" class="text-muted-foreground hover:text-foreground transition-colors">Home</a>
+        <svg class="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
-        
-        <span class="text-[var(--color-primary)]">Search</span>
+        <span class="text-primary font-semibold">Search</span>
       </nav>
       
       <div class="max-w-3xl">
-        <span class="label-text text-[var(--color-text-tertiary)] mb-2 block">Find Answers</span>
-        <h1 class="editorial-title text-[var(--color-text-inverted)]">Search</h1>
-        <p class="text-[var(--color-text-tertiary)] text-lg mt-4">Find answers quickly across our knowledge base</p>
+        <span class="text-sm font-bold uppercase tracking-wider text-primary mb-2 block">Find Answers</span>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-foreground tracking-tight">Search</h1>
+        <p class="text-muted-foreground text-lg mt-4">Find answers quickly across our knowledge base</p>
       </div>
     </div>
   </section>
 
   <!-- Search Section -->
-  <section class="py-12 md:py-16 bg-[var(--color-bg-secondary)]">
-    <div class="container">
+  <section class="py-12 md:py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
       <Search />
     </div>
   </section>

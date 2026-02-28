@@ -32,17 +32,32 @@ const mergedSEO = { ...defaultSEO, ...seo };
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="theme-color" content="#E30613" />
+    
+    <!-- Dark Mode initialization to prevent FOUC -->
+    <script is:inline>
+      const getThemePreference = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+      if (getThemePreference() === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
   </head>
-  <body>
+  <body class="min-h-screen flex flex-col">
     <Header />
     
-    <div class="site-wrapper">
-      <main class="main-content" class:list={[{ 'has-sidebar': showSidebar }]}>
+    <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <main class:list={['min-w-0', showSidebar ? 'lg:col-span-8' : 'lg:col-span-12']}>
         <slot />
       </main>
       
       {showSidebar && (
-        <aside class="sidebar">
+        <aside class="lg:col-span-4 flex flex-col gap-8">
           <slot name="sidebar" />
         </aside>
       )}

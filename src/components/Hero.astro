@@ -9,112 +9,30 @@ const { faq } = Astro.props;
 const { title, category, description } = faq.data;
 ---
 
-<article class="hero">
-  <a href={`/faq/${faq.slug}`} class="hero-link">
-    <div class="hero-image aspect-16-9">
+<article class="relative mb-12 rounded-lg overflow-hidden bg-muted group">
+  <a href={`/faq/${faq.slug}`} class="block text-inherit no-underline">
+    <div class="relative w-full aspect-video md:aspect-[21/9] overflow-hidden">
       <!-- Placeholder image - replace with actual image -->
-      <div class="hero-placeholder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-muted to-border text-muted-foreground transition-transform duration-500 group-hover:scale-105">
+        <svg class="w-16 h-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
+      
+      <!-- Overlay Gradient -->
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
     </div>
     
-    <div class="hero-content">
-      <span class="hero-category">{category}</span>
-      <h1 class="hero-title">{title}</h1>
-      <p class="hero-description">{description}</p>
+    <div class="absolute bottom-0 left-0 right-0 p-6 md:p-8">
+      <span class="inline-block text-xs font-bold uppercase tracking-wider text-primary mb-2">
+        {category}
+      </span>
+      <h1 class="text-2xl md:text-4xl font-extrabold text-white leading-tight mb-2 group-hover:underline">
+        {title}
+      </h1>
+      <p class="text-base md:text-lg text-gray-200 line-clamp-2 md:line-clamp-3">
+        {description}
+      </p>
     </div>
   </a>
 </article>
-
-<style>
-  .hero {
-    position: relative;
-    margin-bottom: var(--space-xl);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    background: var(--color-bg-secondary);
-  }
-
-  .hero-link {
-    display: block;
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .hero-link:hover {
-    text-decoration: none;
-  }
-
-  .hero-image {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-  }
-
-  .aspect-16-9 {
-    aspect-ratio: 16 / 9;
-  }
-
-  .hero-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-tertiary));
-    color: var(--color-text-muted);
-  }
-
-  .hero-placeholder svg {
-    width: 64px;
-    height: 64px;
-  }
-
-  .hero-content {
-    padding: var(--space-lg);
-    background: var(--color-bg-primary);
-  }
-
-  .hero-category {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-primary);
-    margin-bottom: var(--space-sm);
-  }
-
-  .hero-title {
-    font-size: clamp(1.5rem, 4vw, 2.25rem);
-    font-weight: 800;
-    line-height: 1.15;
-    color: var(--color-text-primary);
-    margin-bottom: var(--space-sm);
-  }
-
-  .hero-description {
-    font-size: 1rem;
-    color: var(--color-text-secondary);
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  /* Alternative: Overlay style like DI Digital */
-  .hero-overlay .hero-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.8));
-    color: white;
-    padding: var(--space-xl) var(--space-lg) var(--space-lg);
-  }
-
-  .hero-overlay .hero-title,
-  .hero-overlay .hero-description {
-    color: white;
-  }
-</style>

@@ -12,41 +12,41 @@ const { title, category, tags } = item.data;
 const href = `/faq/${item.slug}`;
 ---
 
-<article class="card card-interactive h-full">
-  <div class="p-6">
+<article class="bg-card border border-border rounded-lg h-full hover:border-primary transition-colors duration-200">
+  <div class="p-6 h-full flex flex-col">
     
     {/* Category Tag */}
     <div class="mb-4">
-      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-[var(--color-primary-50)] text-[var(--color-primary)] border border-[var(--color-primary-100)]">
+      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide bg-primary/10 text-primary border border-primary/20">
         {category}
       </span>
     </div>
     
     {/* Title */}
-    <h3 class="text-lg font-bold text-[var(--color-text-primary)] mb-3 line-clamp-2">
-      <a href={href} class="hover:text-[var(--color-primary)] transition-colors">
+    <h3 class="text-lg font-bold text-foreground mb-3 line-clamp-2">
+      <a href={href} class="hover:text-primary transition-colors">
         {title}
       </a>
     </h3>
     
     {/* Description / Content */}
     {expanded ? (
-      <div class="prose prose-sm max-w-none mb-4 text-[var(--color-text-secondary)]">
+      <div class="prose prose-sm max-w-none mb-4 text-muted-foreground flex-grow">
         <slot />
       </div>
     ) : (
-      <p class="text-[0.9375rem] text-[var(--color-text-secondary)] mb-4 line-clamp-2">
+      <p class="text-sm text-muted-foreground mb-4 line-clamp-2 flex-grow">
         {item.data.description}
       </p>
     )}
     
     {/* Footer */}
-    <div class="flex items-center justify-between pt-4 border-t border-[var(--color-border-light)]">
+    <div class="flex items-center justify-between pt-4 border-t border-border mt-auto">
       
       {/* Tags */}
       <div class="flex flex-wrap gap-2">
         {tags.slice(0, 2).map((tag) => (
-          <span class="text-xs text-[var(--color-text-tertiary)] bg-[var(--color-bg-secondary)] px-2 py-1 rounded-md">
+          <span class="text-xs text-muted-foreground bg-muted px-2 py-1 rounded-md border border-border">
             {tag}
           </span>
         ))}
@@ -55,7 +55,7 @@ const href = `/faq/${item.slug}`;
       {/* Read More Link */}
       <a 
         href={href} 
-        class="text-sm font-semibold text-[var(--color-primary)] hover:text-[var(--color-primary-700)] flex items-center gap-1 transition-colors"
+        class="text-sm font-semibold text-primary hover:text-primary/80 flex items-center gap-1 transition-colors"
       >
         Read
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
