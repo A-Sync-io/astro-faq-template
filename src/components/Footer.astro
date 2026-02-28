@@ -1,5 +1,6 @@
 ---
 import { SITE, NAV } from '../config';
+import FaqBubble from './FaqBubble.astro';
 ---
 
 <footer class="bg-zinc-950 text-zinc-100 mt-16 py-12">
@@ -8,11 +9,8 @@ import { SITE, NAV } from '../config';
       <!-- Column 1: Brand -->
       <div>
         <div class="flex items-center gap-2 mb-4">
-          <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="32" height="32" rx="6" class="fill-primary" />
-            <path d="M8 10h16M8 16h16M8 22h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
-          </svg>
           <span class="text-xl font-bold tracking-tight text-white">{SITE.name}</span>
+          <FaqBubble class="h-8 w-auto [&>svg]:h-full [&>svg]:w-auto" />
         </div>
         <p class="text-sm text-zinc-400 leading-relaxed">{SITE.description}</p>
       </div>

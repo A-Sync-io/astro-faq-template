@@ -3,8 +3,14 @@ import type { SEOProps } from '../types';
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { SITE } from '../config';
+import { SITE, THEME } from '../config';
 import '../styles/global.css';
+import fs from 'node:fs';
+
+// Generate favicon with the configured primary color
+const faviconSvg = fs.readFileSync('public/favicon.svg', 'utf-8')
+  .replace(/#48BB78/g, THEME.primary.DEFAULT);
+const faviconDataUri = `data:image/svg+xml,${encodeURIComponent(faviconSvg)}`;
 
 interface Props {
   seo?: Partial<SEOProps>;
@@ -30,8 +36,8 @@ const mergedSEO = { ...defaultSEO, ...seo };
     <SEO {...mergedSEO} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#E30613" />
+    <link rel="icon" type="image/svg+xml" href={faviconDataUri} />
+    <meta name="theme-color" content={THEME.primary.DEFAULT} />
     
     <!-- Dark Mode initialization to prevent FOUC -->
     <script is:inline>
