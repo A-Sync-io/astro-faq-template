@@ -53,42 +53,12 @@ const mostRead = remainingFAQs.slice(0, 5).map((faq, i) => ({ ...faq, rank: i + 
             <span class="shrink-0 w-8 h-8 flex items-center justify-center bg-primary text-white text-sm font-bold rounded-md">
               {faq.rank}
             </span>
-            <a href={`/faq/${faq.slug}`} class="text-sm font-semibold text-foreground hover:text-primary leading-snug transition-colors">
+            <a href={`/article/${faq.slug}`} class="text-sm font-semibold text-foreground hover:text-primary leading-snug transition-colors">
               {faq.data.title}
             </a>
           </li>
         ))}
       </ol>
-    </div>
-    
-    <!-- Podcast Box (Mocking Technokratin) -->
-    <div class="bg-card border border-border rounded-lg p-6">
-      <h3 class="text-lg font-bold text-foreground mb-4 pb-2 border-b-2 border-primary">
-        Podcasts
-      </h3>
-      <div class="mb-4">
-        <div class="w-full aspect-square bg-muted rounded-md mb-4 flex items-center justify-center text-muted-foreground">
-          <svg class="w-12 h-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
-        <h4 class="text-lg font-bold text-foreground mb-1">Tech Talks</h4>
-        <p class="text-sm text-muted-foreground">27 februari 2026 • 41 min</p>
-      </div>
-      <a href="/podcasts" class="text-sm font-semibold text-primary hover:underline">
-        Mer från Tech Talks →
-      </a>
-    </div>
-    
-    <!-- Newsletter Box -->
-    <div class="bg-primary text-primary-foreground rounded-lg p-6">
-      <h3 class="text-xl font-bold text-white mb-2">Nyhetsbrev</h3>
-      <p class="text-sm text-white/90 mb-4">
-        De viktigaste nyheterna om det digitala näringslivet i din inkorg varje dag.
-      </p>
-      <button class="w-full px-4 py-2 text-sm font-semibold rounded-md bg-white text-primary hover:bg-zinc-100 transition-colors">
-        Anmäl dig
-      </button>
     </div>
     
   </div>
